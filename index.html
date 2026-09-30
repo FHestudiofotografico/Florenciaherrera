@@ -7,12 +7,12 @@
     <title>Florencia Herrera | Fotografía</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- Script de identidad de Netlify para gestión de usuarios (CMS) -->
+    <!-- Netlify Identity: necesario para iniciar sesión en el panel /admin -->
     <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 
-    <!-- Menú de Navegación Fijo Superior -->
+    <!-- Menú de navegación fijo -->
     <nav class="navbar">
         <div class="nav-contenedor">
             <span class="logo">FH</span>
@@ -25,18 +25,17 @@
         </div>
     </nav>
 
-    <!-- Encabezado Principal -->
+    <!-- Portada: el fondo, el título y el subtítulo se cambian desde el panel -->
     <header id="inicio">
-        <h1>Florencia Herrera</h1>
-        <p>El arte de la fotografía</p>
+        <h1 id="titulo-portada">Florencia Herrera</h1>
+        <p id="subtitulo-portada">El arte de la fotografía</p>
     </header>
 
-    <!-- Sección Sobre Mí -->
+    <!-- Sobre Mí: la foto y los textos se cambian desde el panel -->
     <section id="sobre-mi" class="sobre-mi-section">
         <div class="sobre-mi-container">
             <div class="sobre-mi-imagen">
-                <!-- Sube la foto a GitHub con este nombre exacto -->
-                <img src="foto-florencia.jpg" alt="Florencia Herrera - Fotógrafa profesional" />
+                <img src="foto-florencia.jpg" alt="Florencia Herrera - Fotógrafa profesional" onerror="this.style.display='none'" />
             </div>
             <div class="sobre-mi-texto">
                 <span class="etiqueta-destacada">Sobre Mí</span>
@@ -51,23 +50,20 @@
         </div>
     </section>
 
-    <!-- Sección Galería de Obras -->
+    <!-- Galería de obras -->
     <section id="galeria-seccion">
         <h2 class="titulo-galeria">Galería de Obras</h2>
         <p class="subtitulo-galeria">Seleccioná una categoría para ver las fotografías disponibles.</p>
 
-        <!-- Contenedor para filtros/botones de álbumes -->
         <div id="filtros-albumes"></div>
 
-        <!-- Grilla donde JavaScript inyectará las tarjetas -->
         <main class="galeria" id="contenedor-galeria" aria-live="polite"></main>
     </section>
 
-    <!-- Sección de Contratación Especial -->
+    <!-- Contratación de servicios especiales -->
     <section class="seccion-servicios" id="contratar-seccion">
         <div class="servicios-contenedor">
 
-            <!-- Columna Izquierda: Formulario -->
             <div class="columna-formulario">
                 <h2>Contratar Servicio Especial</h2>
                 <p class="subtitulo-form">Completá los detalles de tu evento y me pondré en contacto.</p>
@@ -88,7 +84,6 @@
                 </form>
             </div>
 
-            <!-- Columna Derecha: Información y Propuesta de Valor -->
             <div class="columna-texto">
                 <span class="etiqueta-destacada">Servicios Exclusivos</span>
                 <h3>Hagamos que tus momentos se vuelvan eternos</h3>
@@ -115,19 +110,18 @@
         </div>
     </section>
 
-    <!-- Pie de Página -->
+    <!-- Pie de página -->
     <footer class="pie-pagina">
         <p>&copy; 2026 Florencia Herrera. Todos los derechos reservados.</p>
         <p class="creditos">Hecho por <span class="autor">Lorca, Abel</span></p>
     </footer>
 
-    <!-- Botón Flotante de WhatsApp -->
+    <!-- Botón flotante de WhatsApp (script.js le agrega el mensaje) -->
     <a href="https://api.whatsapp.com/send?phone=5493865260159" id="btn-whatsapp" class="btn-whatsapp"
        target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
         💬 WhatsApp
     </a>
 
-    <!-- Carga del script de la aplicación -->
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
