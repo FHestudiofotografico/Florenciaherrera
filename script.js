@@ -14,7 +14,6 @@ let albumes = [];
 // UTILIDADES
 // ========================================================
 
-// Arma el enlace de WhatsApp
 function crearUrlWhatsApp(mensaje = "") {
     const base = `https://api.whatsapp.com/send?phone=${telefonoWhatsApp}`;
     return mensaje ? `${base}&text=${encodeURIComponent(mensaje)}` : base;
@@ -39,7 +38,7 @@ function irALaGaleria() {
 // CARGA DE DATOS DESDE EL CMS (Portada + Sobre Mí + Galería)
 // ========================================================
 
-// Carga dinámicamente la portada (Fondo y textos)
+// Portada: fondo, título y subtítulo
 async function cargarPortada() {
     try {
         const respuesta = await fetch("portada.json", { cache: "no-cache" });
@@ -47,28 +46,28 @@ async function cargarPortada() {
 
         const datos = await respuesta.json();
 
-        const seccionPortada = document.getElementById("seccion-portada");
+        const seccionPortada = document.getElementById("inicio");
         const tituloPortada = document.getElementById("titulo-portada");
         const subtituloPortada = document.getElementById("subtitulo-portada");
 
-        // Cambia la imagen de fondo dinámicamente
+        // El fondo se pasa al CSS como variable para conservar el oscurecido de la imagen
         if (datos.imagen_fondo && seccionPortada) {
-            seccionPortada.style.backgroundImage = `url('${datos.imagen_fondo}')`;
+            const ruta = String(datos.imagen_fondo).replace(/["\\\n\r]/g, "");
+            seccionPortada.style.setProperty("--portada-fondo", `url("${ruta}")`);
         }
-        
-        // Cambia los textos si existen
+
         if (datos.titulo && tituloPortada) {
-            tituloPortada.innerText = datos.titulo;
+            tituloPortada.textContent = datos.titulo;
         }
         if (datos.subtitulo && subtituloPortada) {
-            subtituloPortada.innerText = datos.subtitulo;
+            subtituloPortada.textContent = datos.subtitulo;
         }
     } catch (error) {
         console.log("Cargando portada por defecto:", error);
     }
 }
 
-// Carga dinámicamente la sección "Sobre Mí" manteniendo el diseño y tipografías
+// Sobre Mí
 async function cargarSobreMi() {
     const imgElement = document.querySelector(".sobre-mi-imagen img");
     const textoContainer = document.querySelector(".sobre-mi-texto");
@@ -79,19 +78,19 @@ async function cargarSobreMi() {
 
         const datos = await respuesta.json();
 
-        // Actualiza la foto de perfil si existe en el JSON
         if (datos.foto && imgElement) {
+            imgElement.style.display = "";
             imgElement.src = datos.foto;
         }
 
-        // Reconstruye el texto conservando la jerarquía CSS original
         if (textoContainer) {
             let parrafosHTML = "";
             if (datos.biografia) {
+                // Un salto de línea o más separa los párrafos
                 parrafosHTML = datos.biografia
-                    .split("\n\n")
+                    .split(/\n+/)
                     .filter(p => p.trim() !== "")
-                    .map(p => `<p>${escaparHTML(p)}</p>`)
+                    .map(p => `<p>${escaparHTML(p.trim())}</p>`)
                     .join("");
             }
 
@@ -128,7 +127,7 @@ async function cargarDatosDesdeCMS() {
 }
 
 // ========================================================
-// MOTOR LÓGICO DE LA GALERÍA INTERACTIVA
+// GALERÍA INTERACTIVA
 // ========================================================
 
 function cargarVistaInicial() {
@@ -247,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnWhatsApp.href = crearUrlWhatsApp("Hola Florencia! Vi tu página web y quisiera hacerte una consulta.");
     }
 
-    // 2. Netlify Identity: al iniciar sesión va al panel
+    // 2. Netlify Identity: al iniciar sesión (o aceptar una invitación) va al panel
     if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
             if (!user) {
@@ -258,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. Carga los datos del CMS
+    // 3. Datos del CMS
     cargarPortada();
     cargarSobreMi();
     cargarDatosDesdeCMS();
@@ -286,6 +285,7 @@ function configurarFormulario() {
             fechaEnvio: new Date().toLocaleString("es-AR")
         };
 
+        // Sin webhook configurado, el pedido se envía por WhatsApp
         if (urlWebhook.includes("TU_WEBHOOK_AQUI")) {
             const mensaje =
                 `Hola Florencia! Quiero solicitar un presupuesto de servicio especial.\n\n` +
