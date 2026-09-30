@@ -1,0 +1,17 @@
+{
+  "albumes": [
+    {
+      "imagenPortada": "/aves1.jpg",
+      "id": "Aves",
+      "tituloAlbum": "Aves",
+      "descripcion": "Aves tucuman",
+      "precioGeneral": "1500",
+      "fotos": [
+        {
+          "title": "Pajarito en Rama",
+          "imagenUrl": "/aves1.jpg"
+        }
+      ]
+    }
+  ]
+}
